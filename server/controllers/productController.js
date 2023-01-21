@@ -15,22 +15,29 @@ export const createProduct = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Get All Products.
-export const getAllProducts = catchAsyncErrors(async (req, res) => {
-  const resultPerPage = 5;
-
+export const getAllProducts = catchAsyncErrors(async (req, res, next) => {
+  const resultPerPage = 8;
   const productsCount = await productModel.countDocuments();
+
   const apiFeature = new ApiFeatures(productModel.find(), req.query)
     .search()
     .filter()
-    .pagination(5);
+    .pagination(resultPerPage);
 
-  const products = await apiFeature.query;
+  let products = await apiFeature.query;
+  let filteredProductsCount = products.length;
 
+  apiFeature.pagination(resultPerPage);
   // ApiFeatures(url , keyword == samosa);
+
+  products = await apiFeature.query;
+
   res.status(201).json({
     success: true,
     products,
     productsCount,
+    resultPerPage,
+    filteredProductsCount,
   });
 });
 

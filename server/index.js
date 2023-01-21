@@ -4,6 +4,7 @@ import productRoutes from "./routes/productRoute.js";
 import app from "./app.js";
 import mongoose from "mongoose";
 import connectDatabase from "./database/database.js";
+import cloudinary from "cloudinary";
 
 // Handling uncaught expection.
 // Eg:- console.log(youtube)
@@ -16,6 +17,12 @@ process.on("uncaughtException", (err) => {
 dotenv.config();
 // Connect the database
 connectDatabase();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
+});
 
 mongoose.connection.on("connected", () => {
   console.log("Mongodb is connected");

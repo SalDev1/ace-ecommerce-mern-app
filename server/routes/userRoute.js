@@ -7,7 +7,7 @@ import {
   getUserDetails,
   loginUser,
   logoutUser,
-  registerUsers,
+  registerUser,
   resetPassword,
   updatePassword,
   updateUserProfile,
@@ -18,7 +18,7 @@ import { isAuthenicatorUser, authorizeRoles } from "../middleware/auth.js";
 const router = express.Router();
 
 router.route("/me").get(isAuthenicatorUser, getUserDetails);
-router.route("/register").post(registerUsers);
+router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/password/forgot").post(forgotPassword);
 router.route("/password/reset/:token").put(resetPassword);

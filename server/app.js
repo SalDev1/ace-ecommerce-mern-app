@@ -4,11 +4,15 @@ import errorMiddleware from "./middleware/error.js";
 import user from "./routes/userRoute.js";
 import cookieParser from "cookie-parser";
 import order from "./routes/orderRoute.js";
+import bodyParser from "body-parser";
+import fileUpload from "express-fileupload";
 
 var app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 app.use("/api/v1", products);
 app.use("/api/v1", user);

@@ -30,6 +30,6 @@ export default (err, req, res, next) => {
 
   res.status(err.statusCode).json({
     success: false,
-    error: err.message,
+    message: err.message,
   });
 };
