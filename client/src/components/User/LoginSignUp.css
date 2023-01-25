@@ -111,6 +111,7 @@
 #registerImage > img {
   width : 3vmax;
   border-radius: 100%;
+  margin-right: 1vmax;
 }
 
 #registerImage > input {

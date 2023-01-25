@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login, register } from "../../actions/userActions";
 import { useAlert } from "react-alert";
 
-const LoginSignUp = ({ history }) => {
+const LoginSignUp = ({ history, location }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const { error, loading, isAuthenicated } = useSelector((state) => state.user);
+  const { error, loading, isAuthenicated } = useSelector(
+    (state) => state?.user
+  );
 
   const loginTab = useRef(null); // For accessing the login form.
   const registerTab = useRef(null);
@@ -38,16 +40,18 @@ const LoginSignUp = ({ history }) => {
   const [avatar, setAvatar] = useState();
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
+  const redirect = location.search ? location.search.split("=")[1] : "/account";
+
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      alert.error(error.message);
       dispatch(clearErrors());
     }
-
     if (isAuthenicated) {
-      history.push("/account");
+      // alert.success("Login Successfully.");
+      history.push(redirect);
     }
-  }, [dispatch, error, alert, history, isAuthenicated]);
+  }, [dispatch, error, alert, history, isAuthenicated, redirect]);
 
   // Helps us in switching tabs from login to signup (vice-versa too).
   const switchTabs = (e, tab) => {
@@ -71,6 +75,7 @@ const LoginSignUp = ({ history }) => {
 
   const loginSubmit = (e) => {
     e.preventDefault();
+
     dispatch(login(loginEmail, loginPassword));
   };
   const registerSubmit = (e) => {

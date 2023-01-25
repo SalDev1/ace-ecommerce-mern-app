@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import Carsouel from "react-material-ui-carousel";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import ReviewCard from "./ReviewCard";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
+import { addItemsToCart } from "../../actions/cartActions";
 
 const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
@@ -34,6 +35,28 @@ const ProductDetails = ({ match }) => {
     size: window.innerWidth < 600 ? 20 : 25,
     value: product.ratings,
     isHalf: true,
+  };
+
+  const [quantity, setQuantity] = useState(1);
+
+  const increasedQuantity = () => {
+    if (product.Stock <= quantity) {
+      return;
+    }
+    const qty = quantity + 1;
+    setQuantity(qty);
+  };
+  const decreasedQuantity = () => {
+    if (1 >= quantity) {
+      return;
+    }
+    const qty = quantity - 1;
+    setQuantity(qty);
+  };
+  const addToCartHandler = () => {
+    // console.log(match.params.id, quantity);
+    dispatch(addItemsToCart(match.params.id, quantity));
+    alert.success("Item Added to Cart");
   };
 
   return (
@@ -73,11 +96,11 @@ const ProductDetails = ({ match }) => {
                 <h1>{`Rs. ${product.price}`}</h1>
                 <div className='detailsBlock-3-1'>
                   <div className='detailsBlock-3-1-1'>
-                    <button>-</button>
-                    <input value='1' type='number' />
-                    <button>+</button>
+                    <button onClick={decreasedQuantity}>-</button>
+                    <input readOnly value={quantity} type='number' />
+                    <button onClick={increasedQuantity}>+</button>
                   </div>{" "}
-                  <button>Add to Cart</button>
+                  <button onClick={addToCartHandler}>Add to Cart</button>
                 </div>
 
                 <p>

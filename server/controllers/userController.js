@@ -77,9 +77,7 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   await user.save({ validateBeforeSave: false });
 
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/password/reset/${resetToken}`;
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
 
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\n If you have not requested this email then 
   , please ignore it `;
@@ -87,7 +85,7 @@ export const forgotPassword = catchAsyncErrors(async (req, res, next) => {
   try {
     await sendEmail({
       email: user.email,
-      subject: "Specter Password Recovery",
+      subject: "Ace Password Recovery",
       message,
     });
 
@@ -163,7 +161,9 @@ export const updatePassword = catchAsyncErrors(async (req, res, next) => {
   }
 
   if (req.body.newPassword !== req.body.confirmPassword) {
-    return next(new ErrorHandler("password does not match", 400));
+    return next(
+      new ErrorHandler("Confirm Password and New Password does not match", 400)
+    );
   }
 
   user.password = req.body.newPassword;
@@ -179,6 +179,23 @@ export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
   };
 
   // we will add cloudinary later.
+  if (req.body.avatar != "") {
+    const user = await User.findById(req.user.id);
+    const imageId = user.avatar.public_id;
+
+    await cloudinary.v2.uploader.destroy(imageId);
+
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
   const user = await userModel.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
     runValidators: true,
