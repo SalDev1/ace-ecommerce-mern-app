@@ -8,6 +8,7 @@ import "./Products.css";
 import Slider from "@material-ui/core/Slider";
 import { Typography } from "@material-ui/core";
 import MetaData from "../layout/MetaData";
+import { useAlert } from "react-alert";
 
 const categories = [
   "Laptop",
@@ -21,6 +22,8 @@ const categories = [
 
 const Products = ({ match }) => {
   const dispatch = useDispatch();
+
+  const alert = useAlert();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 25000]);
@@ -36,6 +39,10 @@ const Products = ({ match }) => {
     filteredProductsCount,
   } = useSelector((state) => state.products);
 
+  console.log(filteredProductsCount);
+  console.log(resultPerPage);
+  console.log(products.length);
+
   const keyword = match.params.keyword;
 
   const setCurrentPageNo = (e) => {
@@ -45,16 +52,17 @@ const Products = ({ match }) => {
   const priceHandler = (e, newPrice) => {
     setPrice(newPrice);
   };
+  let count = filteredProductsCount;
 
   useEffect(() => {
     if (error) {
+      console.log(error);
+
       alert.error(error);
       dispatch(clearErrors());
     }
     dispatch(getProduct(keyword, currentPage, price, category, ratings));
   }, [dispatch, keyword, currentPage, price, category, ratings, alert, error]);
-
-  let count = filteredProductsCount;
 
   return (
     <Fragment>
@@ -110,7 +118,7 @@ const Products = ({ match }) => {
             </fieldset>
           </div>
 
-          {resultPerPage < productsCount && (
+          {resultPerPage < count && (
             <div className='pagination'>
               <Pagination
                 activePage={currentPage}

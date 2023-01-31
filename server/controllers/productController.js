@@ -2,9 +2,35 @@ import productModel from "../models/productModel.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import ApiFeatures from "../utils/apiFeatures.js";
+import cloudinary from "cloudinary";
 
 // Create Product --> Admin
 export const createProduct = catchAsyncErrors(async (req, res, next) => {
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  const imagesLink = [];
+
+  for (let i = 0; i < images.length; i++) {
+    // Pushing all the images in the cloudinary folder.
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "products",
+    });
+
+    // After getting the links of the image from the cloud folder ,
+    // store them in the database.
+    imagesLink.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+  }
+
+  req.body.images = imagesLink;
   req.body.user = req.user.id;
 
   const product = await productModel.create(req.body);
@@ -21,23 +47,31 @@ export const getAllProducts = catchAsyncErrors(async (req, res, next) => {
 
   const apiFeature = new ApiFeatures(productModel.find(), req.query)
     .search()
-    .filter()
-    .pagination(resultPerPage);
+    .filter();
 
   let products = await apiFeature.query;
+
   let filteredProductsCount = products.length;
 
   apiFeature.pagination(resultPerPage);
-  // ApiFeatures(url , keyword == samosa);
 
   products = await apiFeature.query;
 
-  res.status(201).json({
+  res.status(200).json({
     success: true,
     products,
     productsCount,
     resultPerPage,
     filteredProductsCount,
+  });
+});
+// Get All Products (Admin)
+export const getAdminProducts = catchAsyncErrors(async (req, res, next) => {
+  const products = await productModel.find();
+
+  res.status(201).json({
+    success: true,
+    products,
   });
 });
 
@@ -61,7 +95,38 @@ export const updateProduct = catchAsyncErrors(async (req, res, next) => {
   let product = await productModel.findById(req.params.id);
 
   if (!product) {
-    return next(new ErrorHandler("Product Not Found", 500));
+    return next(new ErrorHandler("Product Not Found", 404));
+  }
+  //Images Start Here
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  if (images !== undefined) {
+    // Deleting Images from Cloudinary.
+    for (let i = 0; i < product.images.length; i++) {
+      await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+    }
+  }
+  const imagesLinks = [];
+
+  for (let i = 0; i < images?.length; i++) {
+    // Pushing all the images in the cloudinary folder.
+    const result = await cloudinary.v2.uploader.upload(images[i], {
+      folder: "products",
+    });
+
+    // After getting the links of the image from the cloud folder ,
+    // store them in the database.
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+    req.body.images = imagesLinks;
   }
 
   product = await productModel.findByIdAndUpdate(req.params.id, req.body, {
@@ -82,6 +147,10 @@ export const deleteProduct = catchAsyncErrors(async (req, res) => {
   if (!product) {
     return next(new ErrorHandler("Product Not Found", 500));
   }
+  // Deleting Images from Cloudinary.
+  for (let i = 0; i < product.images.length; i++) {
+    await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+  }
 
   await product.remove();
 
@@ -96,7 +165,7 @@ export const createProductReview = catchAsyncErrors(async (req, res) => {
   const { rating, comment, productId } = req.body;
 
   const review = {
-    user: req.user.id,
+    user: req.user._id,
     name: req.user.name,
     rating: Number(rating),
     comment,
@@ -105,13 +174,13 @@ export const createProductReview = catchAsyncErrors(async (req, res) => {
   const product = await productModel.findById(productId);
 
   const isReviewed = product.reviews.find(
-    (rev) => rev.user.toString() == req.user._id
+    (rev) => rev.user.toString() == req.user._id.toString()
   );
 
   if (isReviewed) {
-    product?.reviews.forEach((rev) => {
-      if (rev.user.toString() === req.user._id.toString()) rev.rating = rating;
-      rev.comment = comment;
+    product.reviews.forEach((rev) => {
+      if (rev.user.toString() === req.user._id.toString())
+        (rev.rating = rating), (rev.comment = comment);
     });
   } else {
     product.reviews.push(review);
@@ -167,7 +236,14 @@ export const deleteReview = catchAsyncErrors(async (req, res, next) => {
     avg += rev.rating;
   });
 
-  const ratings = avg / reviews.length;
+  let ratings = 0;
+
+  if (reviews.length === 0) {
+    ratings = 0;
+  } else {
+    ratings = avg / reviews.length;
+  }
+
   const numOfReviews = reviews.length;
 
   await productModel.findByIdAndUpdate(

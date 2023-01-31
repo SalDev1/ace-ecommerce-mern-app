@@ -6,21 +6,47 @@ import { legacy_createStore as createStore } from "redux";
 import {
   productReducer,
   productDetailsReducer,
+  newReviewReducer,
+  newProductReducer,
+  productsReducer,
+  productReviewsReducer,
+  reviewReducer,
 } from "./reducers/productReducer";
 import {
+  allUsersReducer,
   forgotPasswordReducer,
   profileReducer,
+  userDetailsReducer,
   userReducer,
 } from "./reducers/userReducers";
 import { cartReducer } from "./reducers/cartReducer";
+import {
+  allOrdersReducer,
+  myOrderReducer,
+  newOrderReducer,
+  orderDetailsReducer,
+  orderReducer,
+} from "./reducers/orderReducer";
 
 const reducer = combineReducers({
-  products: productReducer,
+  products: productsReducer,
   productDetails: productDetailsReducer,
   user: userReducer,
   profile: profileReducer,
   forgotPassword: forgotPasswordReducer,
   cart: cartReducer,
+  newOrder: newOrderReducer,
+  myOrders: myOrderReducer,
+  orderDetails: orderDetailsReducer,
+  newReview: newReviewReducer,
+  newProduct: newProductReducer,
+  product: productReducer,
+  allOrders: allOrdersReducer,
+  order: orderReducer,
+  allUsers: allUsersReducer,
+  userDetails: userDetailsReducer,
+  productReviews: productReviewsReducer,
+  review: reviewReducer,
 });
 
 let initialState = {

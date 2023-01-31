@@ -12,14 +12,14 @@ export const newOrder = catchAsyncErrors(async (req, res, next) => {
     taxPrice,
     shippingPrice,
     totalPrice,
-    itemPrice,
+    itemsPrice,
   } = req.body;
 
   const order = await orderModel.create({
     shippingInfo,
     orderItems,
     paymentInfo,
-    itemPrice,
+    itemsPrice,
     taxPrice,
     shippingPrice,
     totalPrice,
@@ -88,10 +88,11 @@ export const updateOrder = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Order not found with this Id", 404));
   }
 
-  order.orderItems.forEach(async (order) => {
-    await updateStock(order.product, order.quantity);
-  });
-
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (order) => {
+      await updateStock(order.product, order.quantity);
+    });
+  }
   order.orderStatus = req.body.status;
 
   if (req.body.status == "Delivered") {

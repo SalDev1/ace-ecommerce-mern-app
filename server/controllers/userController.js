@@ -8,7 +8,6 @@ import User from "../models/userModel.js";
 import cloudinary from "cloudinary";
 
 //  Register new users.
-
 export const registerUser = catchAsyncErrors(async (req, res, next) => {
   const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
     folder: "avatars",
@@ -256,14 +255,18 @@ export const updateUserRole = catchAsyncErrors(async (req, res, next) => {
 export const deleteUser = catchAsyncErrors(async (req, res, next) => {
   const user = await userModel.findById(req.params.id);
 
-  // We will remove cloudinary later.
   if (!user) {
     return next(
       new ErrorHandler(`User does not exist with id : ${req.params.id}`, 400)
     );
   }
 
+  const imageId = user.avatar.public_id;
+
+  await cloudinary.v2.uploader.destroy(imageId);
+
   await user.remove();
+
   res.status(200).json({
     success: true,
     message: "User has been deleted successfully",

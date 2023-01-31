@@ -33,7 +33,7 @@ class ApiFeatures {
 
     // Creating a range of prices :- 1200 to 2000;
     // We are using price[gt] = 1200 , price[lt] = 2000;
-    console.log(queryCopy);
+    // console.log(queryCopy);
 
     let queryStr = JSON.stringify(queryCopy);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
@@ -46,12 +46,12 @@ class ApiFeatures {
   pagination(resultPerPage) {
     // How many products will be there in a single page.
     // console.log(this.querystr.page);
-    const currentPage = Number(this.queryStr?.page) || 1; //50 -
+    const currentPage = Number(this.querystr.page) || 1; //50
 
     const skip = resultPerPage * (currentPage - 1);
-
     // This wiil help us to put a limit , instead of showing all the products.
     this.query = this.query.limit(resultPerPage).skip(skip);
+
     return this;
   }
 }

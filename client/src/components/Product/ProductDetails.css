@@ -46,9 +46,11 @@
     padding : 1vmax 0;
 }
 
-.detailsBlock-2 > span {
-    color : rgba(54,54,0.582);
-    font : 200 1.05vmax cursive;
+.detailsBlock-2-span {
+    /* color : rgba(54,54,0.582); */
+    padding-top : 0.5vmax;
+    font : 400 1.05vmax "Roboto";
+    color:rgba(0, 0, 0, 0.6);
 }
 
 .detailsBlock-3  {
@@ -150,6 +152,27 @@
     transform: scale(1.1);
 }
 
+.submitDialog {
+    display: flex;
+    flex-direction: column;
+}
+
+.submitDialogTextArea {
+    border : 1px solid rgba(0,0,0,0.802);
+    margin : 1vmax 0;
+    outline : none;
+    padding : 1rem;
+    font : 300 1rem "Roboto";
+}
+
+.submitDialogTextArea {
+    border : 1px solid rgba(0,0,0,0.802);
+    margin : 1vmax 0;
+    outline : none;
+    padding : 1rem;
+    font : 300 1rem "Roboto";
+}
+
 .reviewsHeading {
     color : #000000be;
     font: 500 1.4vmax "Roboto";
@@ -163,7 +186,7 @@
 
 .reviews {
     display: flex;
-    overflow : auto hidden;
+    overflow : auto;
 }
 
 .reviewCard {
@@ -179,6 +202,13 @@
     padding : 4vmax;
 }
 
+.reviewCard > div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 1.2vmax;
+}
+
 .reviewCard > img {
     width : 5vmax;
 }
@@ -188,9 +218,10 @@
     font : 600 0.9vmax "Roboto";
 }
 
-.reviewCard > span {
+.reviewCardComment {
+    padding-top: 0.5vmax;
     color : rgba(0,0,0,0.8);
-    font : 300 0.8vmax cursive;
+    font : 300 0.8vmax "Roboto";
 }
 
 .noReviews {
@@ -212,15 +243,17 @@
 
     .detailsBlock-1 > p {
         text-align: center;
-        font-size: 1vmax;
+        font-size: 1.5vmax;
+        margin-bottom: 1vmax;
     }
 
     .detailsBlock-1 > h2{
-        font-size: 2vmax;
+        font-size: 2.7vmax;
+        margin-bottom: 1vmax;
     }
 
     .detailsBlock-2 > span {
-        font-size : 1.5vmax;
+        font-size : 1.8vmax;
     }
     .detailsBlock-3 > h1 {
         font : 700 3vmax "Franklin Gothic Medium";
@@ -246,6 +279,7 @@
         font : 500 1.7vmax "Roboto";
         padding: 1.5vmax;
         width : 20vmax;
+        margin : 1vmax 0;
     }
 
     .detailsBlock-4 {
@@ -261,5 +295,11 @@
         padding : 1.5vmax;
         width : 20vmax;
         margin : 3vmax 0;
+    }
+    .reviewCard > p {
+        font : 600 4vw "Roboto";
+    }
+    .reviewCardComment {
+        font : 300 3.2vw "Roboto";
     }
 }

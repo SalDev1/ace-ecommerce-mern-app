@@ -14,8 +14,8 @@
     flex-wrap: wrap;
     justify-content: center;
     max-width: 100%;
-    padding-left : 5vmax;
-    min-height: 70vh;
+    padding-left : 12vmax;
+    min-height: 75vh;
 }
 
 .paginationBox {

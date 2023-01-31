@@ -4,14 +4,15 @@ import logo from "../../../images/logo.png";
 import { MdAccountCircle } from "react-icons/md";
 import { MdSearch } from "react-icons/md";
 import { MdShoppingCart } from "react-icons/md";
+import "./Header.css";
 
 const options = {
-  burgerColorHover: "#eb4034",
+  burgerColorHover: "lightseagreen",
+  burgerColor: "lightseagreen",
   logo,
-  logoWidth: "20vmax",
+  logoWidth: "50vmax",
   navColor1: "rgb(255,255,255,0.8)",
   logoHoverSize: "10px",
-  logoHoverColor: "#eb4034",
   link1Text: "Home",
   link2Text: "Products",
   link3Text: "Contact",
@@ -26,7 +27,7 @@ const options = {
   nav2justifyContent: "flex-end",
   nav3justifyContent: "flex-start",
   nav4justifyContent: "flex-start",
-  link1ColorHover: "#eb4034",
+  link1ColorHover: "lightseagreen",
   link1Margin: "1vmax",
   profileIcon: true,
   profileIconUrl: "/login",
@@ -38,14 +39,14 @@ const options = {
   cartIcon: true,
   cartIconColor: "rgb(35,35,35,0.8)",
   CartIconElement: MdShoppingCart,
-  profileIconColorHover: "#eb4034",
-  searchIconColorHover: "#eb4034",
-  cartIconColorHover: "#eb4034",
+  profileIconColorHover: "lightseagreen",
+  searchIconColorHover: "lightseagreen",
+  cartIconColorHover: "lightseagreen",
   cartIconMargin: "1vmax",
 };
 
 const Header = () => {
-  return <ReactNavbar {...options} />;
+  return <ReactNavbar {...options} className='logoReactNavBar' />;
 };
 
 export default Header;

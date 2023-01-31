@@ -44,11 +44,15 @@ const LoginSignUp = ({ history, location }) => {
 
   useEffect(() => {
     if (error) {
-      alert.error(error.message);
+      if (error.message) {
+        alert.error(error.message);
+      } else {
+        alert.error(error);
+      }
       dispatch(clearErrors());
     }
     if (isAuthenicated) {
-      // alert.success("Login Successfully.");
+      alert.success("Login Successfully.");
       history.push(redirect);
     }
   }, [dispatch, error, alert, history, isAuthenicated, redirect]);

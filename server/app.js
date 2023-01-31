@@ -6,8 +6,13 @@ import cookieParser from "cookie-parser";
 import order from "./routes/orderRoute.js";
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
+import payment from "./routes/paymentRoute.js";
+import dotenv from "dotenv";
 
 var app = express();
+
+// Config
+dotenv.config();
 
 app.use(express.json());
 app.use(cookieParser());
@@ -17,6 +22,7 @@ app.use(fileUpload());
 app.use("/api/v1", products);
 app.use("/api/v1", user);
 app.use("/api/v1", order);
+app.use("/api/v1", payment);
 
 // Middleware for error.
 app.use(errorMiddleware);

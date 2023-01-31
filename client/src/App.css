@@ -17,9 +17,16 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-/* .flex-wrapper {
+.flex-wrapper {
   display: flex;
   min-height: 100vw;
   flex-direction: column;
   justify-content: space-between;
-} */
+}
+
+.greenColor {
+  color : green !important;
+}
+.redColor {
+  color : red !important;
+}

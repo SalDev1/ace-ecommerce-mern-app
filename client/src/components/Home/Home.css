@@ -1,5 +1,8 @@
 .banner {
-    background-image: linear-gradient(to right, lightseagreen, #3027ae);
+    background-image: url("../../images/cover.jfif");
+    background-position : center;
+    background-repeat: no-repeat;
+    background-size: cover;
     height: 100vmin;
     display: flex;
     text-align: center;
@@ -61,40 +64,38 @@
 .container {
     display: flex;
     margin : 2vmax auto;
-    width : 80vw;
+    width : 95vw;
     flex-wrap: wrap;
     justify-content: center;
     max-width: 100%;
 }
 
 .productCard {
-    width: 14vmax;
+    width: 16vw;
     display: flex;
     flex-direction: column;
     text-decoration: none;
     color: rgb(48, 48, 48);
-    margin: 1.5vmax;
+    margin: 2vmax;
     transition: all 0.5s;
-    padding-bottom: 0.5vmax;
-    border: 0.5px solid rgb(238, 238, 238);
-    border-radius: 9px;
+    border: 1px solid rgb(206, 206, 206);
+    border-radius: 10px;
 }
-
-.productCard>img {
-    width: 14vmax;
+.productCard > img {
+    width: 100%;
+    background-size: cover;
+    border-radius: 10px 10px 0 0;
 }
-
-.productCard>div {
-    margin: 0.5vmax;
+.productCard > div {
+    padding: 0.5vmax;
     display: flex;
     justify-content: flex-start;
+    flex-direction: column;
 }
-
-.productCard>div>span {
-    margin: 0.5vmax;
+.productCardSpan {
+    padding: 0.5vmax 0.2vmax;
     font: 300 0.7max "Roboto";
 }
-
 .productCard>p {
     font-family: "Roboto";
     font-size: 1.2vmax;
@@ -115,21 +116,35 @@
     transform: translateY(-1vmax);
 }
 
+@media screen and (max-width : 800px) {
+    .productCard {
+        width: 26vw;
+    }
+}
+
 @media screen and (max-width : 600px) {
+    .productCard {
+        width : 70vw;
+    }
     .productCard>p {
-        font-size: 1.7vmax;
+        margin: 1vmax 0;
+        padding-left: 1vmax;
+        font-size: 2.2vmax;
     }
 
     .productCard>div {
         margin: 0vmax;
         display: black;
+        padding : 0.5vmax
     }
 
     .productCard>span {
-        font-size: 1.5vmax;
+        margin: 1vmax;
+        font-size: 2.2vmax;
     }
 
     .productCard>div>span {
         margin: 0 0.5vmax;
+        font : 300 2.2vmax "Roboto";
     }
 }
