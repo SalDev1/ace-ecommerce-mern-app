@@ -14,7 +14,9 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-dotenv.config();
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  dotenv.config();
+}
 // Connect the database
 connectDatabase();
 

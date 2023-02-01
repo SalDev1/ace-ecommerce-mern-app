@@ -43,8 +43,12 @@ import NotFound from "./components/layout/NotFound/NotFound";
 
 function App() {
   const { isAuthenicated, user } = useSelector((state) => state.user);
+  const { shippingInfo } = useSelector((state) => state.cart);
+
+  console.log(window.location.pathname.length);
 
   const [stripeApiKey, setStripeApiKey] = useState("");
+  console.log(shippingInfo);
 
   const getStripeApiKey = async () => {
     const { data } = await axios.get("/api/v1/stripeapikey");
@@ -55,9 +59,12 @@ function App() {
     store.dispatch(loadUser());
 
     getStripeApiKey();
+    console.log(window.location.pathname);
   }, [stripeApiKey]);
 
   // window.addEventListener("contextmenu", (e) => e.preventDefault());
+
+  // console.log(stripeApiKey);
 
   return (
     <Router>
@@ -96,9 +103,9 @@ function App() {
         <Route exact path='/login' component={LoginSignUp} />
         <Route exact path='/cart' component={Cart} />
         <ProtectedRoute exact path='/shipping' component={Shipping} />
-        <ProtectedRoute exact path='/order/confirm' component={ConfirmOrder} />
         <ProtectedRoute exact path='/success' component={OrderSuccess} />
         <ProtectedRoute exact path='/orders' component={MyOrders} />
+        <ProtectedRoute exact path='/order/confirm' component={ConfirmOrder} />
         <ProtectedRoute exact path='/order/:id' component={OrderDetails} />
 
         <ProtectedRoute
@@ -157,11 +164,12 @@ function App() {
           component={ProductReviews}
         />
 
-        <Route
+        {/* It's version error */}
+        {/* <Route
           component={
             window.location.pathname === "/process/payment" ? null : NotFound
           }
-        />
+        /> */}
       </Switch>
 
       <Footer />
