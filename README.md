@@ -24,4 +24,4 @@ Ace is a fully functional, self-built full-stack E-Commerce web application engi
 - Dynamic Product Listing - In Sync with MongoDB Database.
 - Error Validations, Responsive User Interface for Seamless Customer Experience.
 - Authenticating users using JWT session management.
-
+- Maintaining User Profile Management
